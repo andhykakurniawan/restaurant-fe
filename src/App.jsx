@@ -19,6 +19,7 @@ export default function App() {
           path="/admin"
           element={<ProtectedRoute allowedRoles={["ADMIN", "SUPER_ADMIN"]} />}
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path=":section" element={<DashboardPage />} />
         </Route>
 
