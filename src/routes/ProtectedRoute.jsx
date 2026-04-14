@@ -1,11 +1,25 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
+import DashboardLayout from "../components/layout/DashboardLayout";
 
-export default function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("token");
+export default function ProtectedRoute({ allowedRoles }) {
+  const location = useLocation();
+  const { isAuthenticated, user } = useAuth();
 
-  if (!token) {
-    return <Navigate to="/" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
 
-  return children;
+  if (
+    allowedRoles?.length &&
+    (!user?.role || !allowedRoles.includes(user.role))
+  ) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  return (
+    <DashboardLayout>
+      <Outlet />
+    </DashboardLayout>
+  );
 }

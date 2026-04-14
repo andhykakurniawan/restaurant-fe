@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
 
 /* Reset dasar supaya layout fullscreen dan konsisten */
 html,
